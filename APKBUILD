@@ -118,7 +118,6 @@ build() {
 
 	cd "$builddir"
 	./configure \
-    --enable-debug \
 		--build=$CBUILD \
 		--host=$CHOST \
 		--prefix="$_java_home" \
@@ -128,6 +127,9 @@ build() {
 		--localstatedir=/var \
 		--disable-dependency-tracking \
 		--disable-downloading \
+		--disable-zip-debug-info \
+		--with-debug-level=slowdebug \
+		--with-target-bits=64 \
 		--with-parallel-jobs=${JOBS:-2} \
 		--with-openjdk-src-zip="$srcdir/openjdk-$_dropsver.tar.xz" \
 		--with-hotspot-src-zip="$srcdir/hotspot-$_dropsver.tar.xz" \

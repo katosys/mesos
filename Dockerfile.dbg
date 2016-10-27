@@ -1,26 +1,9 @@
-#------------------------------------------------------------------------------
-# Set the base image for subsequent instructions:
-#------------------------------------------------------------------------------
-
 FROM alpine:3.4
 MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 
-#------------------------------------------------------------------------------
-# Environment variables:
-#------------------------------------------------------------------------------
-
-ENV TAG="1.0.1" \
-    PREFIX="/usr/local" \
-    JAVA_HOME="/usr/lib/jvm/default-jvm" \
-    JAVA_JVM_LIBRARY="/usr/lib/jvm/default-jvm/jre/lib/amd64/server/libjvm.so" \
-    LD_LIBRARY_PATH="/usr/lib/jvm/default-jvm/jre/lib/amd64/server" \
-    EDGE_REPO="http://nl.alpinelinux.org/alpine/edge" \
-    MESOS_SOURCE_DIR="/mesos" \
-    MESOS_BUILD_DIR="/mesos/build"
-
-#------------------------------------------------------------------------------
+#---------------------
 # Configure OpenJDK8:
-#------------------------------------------------------------------------------
+#---------------------
 
 RUN apk add -U --no-cache -t dev alpine-sdk && adduser -D build \
     && echo "build ALL=(ALL:ALL) ALL" | (EDITOR="tee -a" visudo) \
@@ -33,16 +16,25 @@ RUN apk add -U --no-cache -t dev alpine-sdk && adduser -D build \
 
 COPY APKBUILD /home/build/aports/community/openjdk8/APKBUILD
 
-#------------------------------------------------------------------------------
+#-----------------------------
 # Build and install OpenJDK8:
-#------------------------------------------------------------------------------
+#-----------------------------
 
 RUN cd /home/build/aports/community/openjdk8 && sudo -u build abuild -r \
     && apk add --allow-untrusted /home/build/packages/community/x86_64/*.apk
 
-#------------------------------------------------------------------------------
+#------------------
 # Configure Mesos:
-#------------------------------------------------------------------------------
+#------------------
+
+ENV TAG="1.0.1" \
+    PREFIX="/usr/local" \
+    JAVA_HOME="/usr/lib/jvm/default-jvm" \
+    JAVA_JVM_LIBRARY="/usr/lib/jvm/default-jvm/jre/lib/amd64/server/libjvm.so" \
+    LD_LIBRARY_PATH="/usr/lib/jvm/default-jvm/jre/lib/amd64/server" \
+    EDGE_REPO="http://nl.alpinelinux.org/alpine/edge" \
+    MESOS_SOURCE_DIR="/mesos" \
+    MESOS_BUILD_DIR="/mesos/build"
 
 RUN apk add -U --no-cache -t dev git autoconf automake libtool g++ gdb ncurses \
     zlib-dev fts-dev apr-dev curl-dev file cyrus-sasl-dev cyrus-sasl-crammd5 \
@@ -56,21 +48,29 @@ RUN apk add -U --no-cache -t dev git autoconf automake libtool g++ gdb ncurses \
     --disable-dependency-tracking --disable-maintainer-mode --disable-python \
     --enable-silent-rules --enable-debug
 
-#------------------------------------------------------------------------------
+#--------------
 # Build Mesos:
-#------------------------------------------------------------------------------
+#--------------
 
 RUN cd /mesos/build && \
     CORES=$(cat /proc/cpuinfo | grep processor | wc -l) \
     && make -j${CORES}
 
-#------------------------------------------------------------------------------
-# Run tests:
-#------------------------------------------------------------------------------
+#--------------
+# Build tests:
+#--------------
 
 RUN cd /mesos/build && \
     CORES=$(cat /proc/cpuinfo | grep processor | wc -l) \
-    && make check GTEST_FILTER="ExamplesTest.JavaFramework" \
+    && make -j${CORES} tests
+
+#------------
+# Run tests:
+#------------
+
+RUN cd /mesos/build && \
+    CORES=$(cat /proc/cpuinfo | grep processor | wc -l) \
+    && make -j${CORES} check GTEST_FILTER="ExamplesTest.JavaFramework" \
     || true
 
 #------------------------------------------------------------------------------
