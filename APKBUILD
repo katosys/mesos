@@ -12,7 +12,7 @@ url="http://icedtea.classpath.org/"
 arch="all"
 license="custom"
 depends="$pkgname-jre java-cacerts"
-options="sover-namecheck"
+options="!strip sover-namecheck"
 makedepends="bash findutils tar zip file paxmark gawk util-linux libxslt
 	autoconf automake linux-headers sed xz coreutils
 	openjdk7 ca-certificates
