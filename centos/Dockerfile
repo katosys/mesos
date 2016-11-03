@@ -17,7 +17,7 @@ ENV VERSION="1.0.1" \
 #------------------------------------------------------------------------------
 
 RUN rpm -i ${REPO}/mesosphere-el-repo-7-1.noarch.rpm \
-    && yum install -y mesos-${VERSION} \
+    && yum update -y && yum install -y mesos-${VERSION} \
     && yum clean all
 
 #------------------------------------------------------------------------------
