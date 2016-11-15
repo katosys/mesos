@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --rm -t quay.io/kato/mesos-base .
+docker build --rm -t quay.io/kato/mesos .
