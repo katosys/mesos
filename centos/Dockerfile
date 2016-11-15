@@ -9,16 +9,16 @@ MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 # Environment variables:
 #------------------------------------------------------------------------------
 
-ENV VERSION="1.0.1" \
+ENV VERSION="1.1.0" \
     REPO="http://repos.mesosphere.io/el/7/noarch/RPMS"
 
 #------------------------------------------------------------------------------
 # Install mesos:
 #------------------------------------------------------------------------------
 
-RUN rpm -i ${REPO}/mesosphere-el-repo-7-1.noarch.rpm \
-    && yum update -y && yum install -y mesos-${VERSION} iptables \
-    && yum clean all
+RUN rpm -i ${REPO}/mesosphere-el-repo-7-1.noarch.rpm && yum update -y \
+    && yum install --enablerepo=mesosphere-unstable -y mesos-${VERSION} \
+    iptables && yum clean all
 
 #------------------------------------------------------------------------------
 # Command:
