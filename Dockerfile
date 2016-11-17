@@ -1,1 +1,1 @@
-centos/Dockerfile
+ubuntu/Dockerfile
