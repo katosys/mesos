@@ -32,8 +32,8 @@ RUN apt-get update && DEV='git openjdk-7-jdk autoconf libtool build-essential \
     --enable-optimize --enable-silent-rules --sbindir=${PREFIX}/bin \
     && CORES=$(cat /proc/cpuinfo | grep processor | wc -l) && make -j${CORES} \
     && make install && cd / && rm -rf mesos ${PREFIX}/{include,etc} \
-    && find ${PREFIX} -type f -perm /u=x,g=x,o=x | xargs strip -s 2>/dev/null \
-    && apt-get autoremove --purge -y $DEV
+    && find ${PREFIX} -type f -perm /u=x,g=x,o=x | xargs strip -s 2>/dev/null; \
+    apt-get autoremove --purge -y $DEV
 
 #------------------------------------------------------------------------------
 # Command:
