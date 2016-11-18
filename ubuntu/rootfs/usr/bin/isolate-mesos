@@ -1,39 +1,22 @@
 #!/bin/bash
 
 #------------------------------------------------------------------------------
-# Initialization:
-#------------------------------------------------------------------------------
-
-DST='/opt/mesos'; [ -d ${DST}/bin ] || mkdir -p ${DST}/bin
-
-#------------------------------------------------------------------------------
-# Function: isolate <binary> <type>
+# Function: isolate <binary>
 #------------------------------------------------------------------------------
 
 function isolate {
-
-  for i in $(ldd $1 |  awk '/=> \// {print $3}'); do
-    d="${i%/*}"; [ ! -d ${DST}${d} ] && mkdir -p ${DST}${d}
-    cp -f ${i} ${DST}${d}
+  for i in $(ldd $1 | awk '/=> \// {print $3}'); do
+    cp -f ${i} ${PREFIX}/lib &> /dev/null
   done
-
-  case ${2} in
-    *-sharedlib)  cp ${1} ${DST}/lib ;;
-    *-executable) cp ${1} ${DST}/bin ;;
-  esac
 }
 
 #------------------------------------------------------------------------------
-# Copy executables and shared libs:
+# Copy shared libs:
 #------------------------------------------------------------------------------
 
-for i in $(rpm -ql mesos); do
-  args=$(file --mime $i | egrep "x-executable|x-sharedlib" | awk -F"[:;]" '{print $1" "$2}')
-  [ "$args" != "" ] && isolate $args
-done
-
-#------------------------------------------------------------------------------
-# Copy the Web-UI:
-#------------------------------------------------------------------------------
-
-cp -R /usr/share/mesos/webui ${DST}
+for j in 1 2; do
+  for i in $(find ${PREFIX}); do
+    args=$(file --mime $i | egrep "x-executable|x-sharedlib" | cut -f1 -d:)
+    [ "$args" != "" ] && isolate $args
+  done
+done; exit 0
