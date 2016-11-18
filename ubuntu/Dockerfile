@@ -24,7 +24,7 @@ RUN git clone https://git-wip-us.apache.org/repos/asf/mesos.git && cd mesos \
     && { [ "${TAG}" != "master" ] && git checkout tags/${TAG} -b build; }; \
     ./bootstrap && mkdir build && cd build && ../configure --prefix=${PREFIX} \
     --disable-dependency-tracking --disable-maintainer-mode --disable-python \
-    --enable-optimize --enable-silent-rules --sbindir=${PREFIX}/bin
+    --enable-silent-rules --sbindir=${PREFIX}/bin
 
 RUN cd mesos/build && CORES=$(cat /proc/cpuinfo | grep processor | wc -l) \
     && make -j${CORES} && make install
@@ -38,7 +38,7 @@ COPY ubuntu/rootfs /
 RUN find ${PREFIX} -name *.sh -delete -o -name *.la -delete \
     && find ${PREFIX}/lib -type l -delete && bash -c "rm -rf /mesos \
     ${PREFIX}/{include,etc} ${PREFIX}/lib/{mesos,pkgconfig}" \
-    && isolate-mesos
+    && isolate-mesos && rm -f ${PREFIX}/lib/libc.so.6
 
 #------------------------------------------------------------------------------
 # Clean image (for latter squash):
