@@ -6,14 +6,10 @@ FROM gentoo/stage3-amd64
 MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 
 #------------------------------------------------------------------------------
-# Environment variables:
+# Build mesos:
 #------------------------------------------------------------------------------
 
 ENV VERSION="1.1.0"
-
-#------------------------------------------------------------------------------
-# Build mesos:
-#------------------------------------------------------------------------------
 
 COPY gentoo/rootfs /
 
@@ -26,7 +22,7 @@ RUN emerge -q --onlydeps sys-cluster/mesos
 RUN emerge -q sys-cluster/mesos
 
 #------------------------------------------------------------------------------
-# Isolate mesos:
+# Isolate mesos in /opt:
 #------------------------------------------------------------------------------
 
 RUN find /opt -name *.sh -delete -o -name *.la -delete \
@@ -34,7 +30,7 @@ RUN find /opt -name *.sh -delete -o -name *.la -delete \
     && isolate-mesos
 
 #------------------------------------------------------------------------------
-# Cleanup:
+# Pre-squash cleanup:
 #------------------------------------------------------------------------------
 
 RUN wget https://busybox.net/downloads/binaries/busybox-x86_64 -qO /busybox \
