@@ -26,4 +26,4 @@ done
 # Cleanup:
 #------------------------------------------------------------------------------
 
-rm -f /opt/lib/libc.so.6
+rm -f /opt/lib/libc.so.6 /opt/lib/libpthread.so.0
