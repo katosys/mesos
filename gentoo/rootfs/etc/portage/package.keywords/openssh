@@ -1,0 +1,4 @@
+# Allow root password logins in the live-cds
+=net-misc/openssh-7.2_p2-r1
+# required by sys-cluster/mesos (argument)
+=sys-cluster/mesos-1.1.0 ~amd64
