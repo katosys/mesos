@@ -19,7 +19,7 @@ RUN emerge-webrsync -q \
     && ebuild mesos-${VERSION}.ebuild digest
 
 RUN emerge -q --onlydeps sys-cluster/mesos
-RUN emerge -q sys-cluster/mesos
+RUN emerge sys-cluster/mesos
 
 #------------------------------------------------------------------------------
 # Isolate mesos in /opt:

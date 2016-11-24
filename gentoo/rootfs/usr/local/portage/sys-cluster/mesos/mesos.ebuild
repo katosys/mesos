@@ -16,7 +16,9 @@ SLOT="0"
 DEPEND="dev-libs/apr
         dev-vcs/subversion
         dev-libs/cyrus-sasl
-        net-misc/curl"
+        dev-java/maven-bin
+        net-misc/curl
+        virtual/jdk"
 
 src_prepare() {
   mkdir build
@@ -30,7 +32,6 @@ src_configure() {
     --disable-dependency-tracking \
     --disable-maintainer-mode \
     --enable-silent-rules \
-    --disable-java \
     --disable-python
 }
 
