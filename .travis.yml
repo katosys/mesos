@@ -2,7 +2,7 @@ language: bash
 services: docker
 
 script:
-   - travis_wait 20 ./bin/build
+   - travis_wait 60 ./bin/build
 
 after_script:
    - docker images
