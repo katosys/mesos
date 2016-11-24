@@ -26,7 +26,7 @@ RUN emerge -q sys-cluster/mesos
 #------------------------------------------------------------------------------
 
 RUN find /opt -name *.sh -delete -o -name *.la -delete \
-    && rm -rf /opt/{include,etc} /opt/lib/pkgconfig \
+    && rm -rf /opt/{include,etc,icedtea-*,.keep} /opt/lib/pkgconfig \
     && isolate-mesos
 
 #------------------------------------------------------------------------------
