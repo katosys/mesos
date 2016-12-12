@@ -9,7 +9,7 @@ MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 # Build mesos:
 #------------------------------------------------------------------------------
 
-ENV VERSION="1.1.0"
+ENV VERSION="9999" # Use 9999 for master
 
 COPY rootfs /
 

@@ -9,7 +9,7 @@ inherit git-r3
 DESCRIPTION="Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines."
 HOMEPAGE="http://mesos.apache.org/"
 EGIT_REPO_URI="https://github.com/apache/mesos.git"
-EGIT_COMMIT="${PV}"
+[ "${PV}" -eq "9999" ] && EGIT_COMMIT="master" || EGIT_COMMIT="${PV}"
 RESTRICT="mirror"
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64"
