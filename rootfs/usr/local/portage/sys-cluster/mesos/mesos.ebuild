@@ -4,9 +4,12 @@
 
 EAPI=5
 
+inherit git-r3
+
 DESCRIPTION="Apache Mesos abstracts CPU, memory, storage, and other compute resources away from machines."
 HOMEPAGE="http://mesos.apache.org/"
-SRC_URI="http://archive.apache.org/dist/${PN}/${PV}/${P}.tar.gz"
+EGIT_REPO_URI="https://github.com/apache/mesos.git"
+EGIT_COMMIT="${PV}"
 RESTRICT="mirror"
 LICENSE="Apache-2.0"
 KEYWORDS="~amd64"
@@ -21,6 +24,7 @@ DEPEND="dev-libs/apr
         virtual/jdk"
 
 src_prepare() {
+  ./bootstrap
   mkdir build
 }
 
