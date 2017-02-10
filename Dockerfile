@@ -9,14 +9,14 @@ MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 # Build mesos:
 #------------------------------------------------------------------------------
 
-ENV VERSION="9999"
+ENV VERSION="1.2.0-rc1"
 
 COPY rootfs /
 
 RUN emerge-webrsync -q \
     && cd /usr/local/portage/sys-cluster/mesos \
-    && mv mesos.ebuild mesos-${VERSION}.ebuild \
-    && ebuild mesos-${VERSION}.ebuild digest
+    && mv mesos.ebuild mesos-${VERSION/-/_}.ebuild \
+    && ebuild mesos-${VERSION/-/_}.ebuild digest
 
 RUN emerge -q --onlydeps sys-cluster/mesos
 RUN emerge -q sys-cluster/mesos
@@ -33,7 +33,7 @@ RUN find /opt -name *.sh -delete -o -name *.la -delete \
 # Pre-squash cleanup:
 #------------------------------------------------------------------------------
 
-RUN wget https://busybox.net/downloads/binaries/busybox-x86_64 -qO /busybox \
+RUN wget https://busybox.net/downloads/binaries/1.26.2-defconfig-multiarch/busybox-x86_64 -qO /busybox \
     && chmod +x /busybox && busybox rm -rf var/ usr/ tmp/ sbin/ root/ mnt/ \
     lib* media/ home/ boot/ run/ /etc bin/* &> /dev/null; \
     /busybox ln -s /busybox /bin/sh \
