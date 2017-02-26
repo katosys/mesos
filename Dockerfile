@@ -9,7 +9,7 @@ MAINTAINER Marc Villacorta Morera <marc.villacorta@gmail.com>
 # Build mesos:
 #------------------------------------------------------------------------------
 
-ENV VERSION="1.2.0-rc1"
+ENV VERSION="1.2.0-rc2"
 
 COPY rootfs /
 
